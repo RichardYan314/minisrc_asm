@@ -29,10 +29,18 @@ task cocor {
     }
 }
 
-mainClassName = 'miniSRCasm'
+mainClassName = 'MiniSRCasm'
 
 jar {
     manifest {
-        attributes 'Main-Class': 'miniSRCasm'
+        attributes 'Main-Class': 'MiniSRCasm'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    configurations {
+        jar.archiveName = 'minisrc.jar'
     }
 }
