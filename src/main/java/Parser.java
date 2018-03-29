@@ -11,40 +11,39 @@ public class Parser {
 	public static final int _pLd = 3;
 	public static final int _pLdi = 4;
 	public static final int _pSt = 5;
-	public static final int _pLdr = 6;
-	public static final int _pStr = 7;
-	public static final int _pAdd = 8;
-	public static final int _pSub = 9;
-	public static final int _pAnd = 10;
-	public static final int _pOr = 11;
-	public static final int _pShr = 12;
-	public static final int _pShl = 13;
-	public static final int _pRor = 14;
-	public static final int _pRol = 15;
-	public static final int _pAddi = 16;
-	public static final int _pAndi = 17;
-	public static final int _pOri = 18;
-	public static final int _pMul = 19;
-	public static final int _pDiv = 20;
-	public static final int _pNeg = 21;
-	public static final int _pNot = 22;
-	public static final int _pBrzr = 23;
-	public static final int _pBrnz = 24;
-	public static final int _pBrpl = 25;
-	public static final int _pBrmi = 26;
-	public static final int _pJr = 27;
-	public static final int _pJal = 28;
-	public static final int _pIn = 29;
-	public static final int _pOut = 30;
-	public static final int _pMfhi = 31;
-	public static final int _pMflo = 32;
-	public static final int _pNop = 33;
-	public static final int _pHalt = 34;
-	public static final int _pOrg = 35;
-	public static final int _pWord = 36;
-	public static final int _pByte = 37;
-	public static final int _pSkip = 38;
-	public static final int maxT = 44;
+	public static final int _pAdd = 6;
+	public static final int _pSub = 7;
+	public static final int _pAnd = 8;
+	public static final int _pOr = 9;
+	public static final int _pShr = 10;
+	public static final int _pShra = 11;
+	public static final int _pShl = 12;
+	public static final int _pRor = 13;
+	public static final int _pRol = 14;
+	public static final int _pAddi = 15;
+	public static final int _pAndi = 16;
+	public static final int _pOri = 17;
+	public static final int _pMul = 18;
+	public static final int _pDiv = 19;
+	public static final int _pNeg = 20;
+	public static final int _pNot = 21;
+	public static final int _pBrzr = 22;
+	public static final int _pBrnz = 23;
+	public static final int _pBrpl = 24;
+	public static final int _pBrmi = 25;
+	public static final int _pJr = 26;
+	public static final int _pJal = 27;
+	public static final int _pIn = 28;
+	public static final int _pOut = 29;
+	public static final int _pMfhi = 30;
+	public static final int _pMflo = 31;
+	public static final int _pNop = 32;
+	public static final int _pHalt = 33;
+	public static final int _pOrg = 34;
+	public static final int _pWord = 35;
+	public static final int _pByte = 36;
+	public static final int _pSkip = 37;
+	public static final int maxT = 43;
 
 	static final boolean _T = true;
 	static final boolean _x = false;
@@ -126,21 +125,21 @@ boolean debug = false;
 	
 	void Minisrc() {
 		while (StartOf(1)) {
-			if (la.kind == 35) {
+			if (la.kind == 34) {
 				orgDirect();
 			} else if (StartOf(2)) {
 				Instr();
 			} else {
 				data();
 			}
-			if (la.kind == 39) {
+			if (la.kind == 38) {
 				Get();
 			}
 		}
 	}
 
 	void orgDirect() {
-		Expect(35);
+		Expect(34);
 		Expect(1);
 		int addr = intValue(t.val); 
 		mem.advPtr(addr); 
@@ -162,122 +161,118 @@ boolean debug = false;
 			break;
 		}
 		case 6: {
-			word = ldrInstr();
-			break;
-		}
-		case 7: {
-			word = strInstr();
-			break;
-		}
-		case 8: {
 			word = addInstr();
 			break;
 		}
-		case 9: {
+		case 7: {
 			word = subInstr();
 			break;
 		}
-		case 10: {
+		case 8: {
 			word = andInstr();
 			break;
 		}
-		case 11: {
+		case 9: {
 			word = orInstr();
 			break;
 		}
-		case 12: {
+		case 10: {
 			word = shrInstr();
 			break;
 		}
-		case 13: {
+		case 11: {
+			word = shraInstr();
+			break;
+		}
+		case 12: {
 			word = shlInstr();
 			break;
 		}
-		case 14: {
+		case 13: {
 			word = rorInstr();
 			break;
 		}
-		case 15: {
+		case 14: {
 			word = rolInstr();
 			break;
 		}
-		case 16: {
+		case 15: {
 			word = addiInstr();
 			break;
 		}
-		case 17: {
+		case 16: {
 			word = andiInstr();
 			break;
 		}
-		case 18: {
+		case 17: {
 			word = oriInstr();
 			break;
 		}
-		case 19: {
+		case 18: {
 			word = mulInstr();
 			break;
 		}
-		case 20: {
+		case 19: {
 			word = divInstr();
 			break;
 		}
-		case 21: {
+		case 20: {
 			word = negInstr();
 			break;
 		}
-		case 22: {
+		case 21: {
 			word = notInstr();
 			break;
 		}
-		case 23: {
+		case 22: {
 			word = brzrInstr();
 			break;
 		}
-		case 24: {
+		case 23: {
 			word = brnzInstr();
 			break;
 		}
-		case 25: {
+		case 24: {
 			word = brplInstr();
 			break;
 		}
-		case 26: {
+		case 25: {
 			word = brmiInstr();
 			break;
 		}
-		case 27: {
+		case 26: {
 			word = jrInstr();
 			break;
 		}
-		case 28: {
+		case 27: {
 			word = jalInstr();
 			break;
 		}
-		case 29: {
+		case 28: {
 			word = inInstr();
 			break;
 		}
-		case 30: {
+		case 29: {
 			word = outInstr();
 			break;
 		}
-		case 31: {
+		case 30: {
 			word = mfhiInstr();
 			break;
 		}
-		case 32: {
+		case 31: {
 			word = mfloInstr();
 			break;
 		}
-		case 33: {
+		case 32: {
 			word = nopInstr();
 			break;
 		}
-		case 34: {
+		case 33: {
 			word = haltInstr();
 			break;
 		}
-		default: SynErr(45); break;
+		default: SynErr(44); break;
 		}
 		mem.addWord(word.get()); 
 		if(debug) {
@@ -287,11 +282,11 @@ boolean debug = false;
 	}
 
 	void data() {
-		if (la.kind == 36) {
+		if (la.kind == 35) {
 			Word();
-		} else if (la.kind == 37) {
+		} else if (la.kind == 36) {
 			Byte();
-		} else SynErr(46);
+		} else SynErr(45);
 	}
 
 	Word  ldInstr() {
@@ -302,15 +297,15 @@ boolean debug = false;
 		word.op(0b00000); 
 		ra = reg();
 		word.ra(ra); 
-		Expect(40);
+		Expect(39);
 		Expect(1);
 		int imm = intValue(t.val); 
 		word.imm(imm); 
-		if (la.kind == 41) {
+		if (la.kind == 40) {
 			Get();
 			rb = reg();
 			word.rb(rb); 
-			Expect(42);
+			Expect(41);
 		}
 		return word;
 	}
@@ -323,15 +318,15 @@ boolean debug = false;
 		word.op(0b00001); 
 		ra = reg();
 		word.ra(ra); 
-		Expect(40);
+		Expect(39);
 		Expect(1);
 		int imm = intValue(t.val); 
 		word.imm(imm); 
-		if (la.kind == 41) {
+		if (la.kind == 40) {
 			Get();
 			rb = reg();
 			word.rb(rb); 
-			Expect(42);
+			Expect(41);
 		}
 		return word;
 	}
@@ -345,43 +340,13 @@ boolean debug = false;
 		Expect(1);
 		int imm = intValue(t.val); 
 		word.imm(imm); 
-		if (la.kind == 41) {
+		if (la.kind == 40) {
 			Get();
 			rb = reg();
 			word.rb(rb); 
-			Expect(42);
+			Expect(41);
 		}
-		Expect(40);
-		ra = reg();
-		word.ra(ra); 
-		return word;
-	}
-
-	Word  ldrInstr() {
-		Word  word;
-		int ra, rb; 
-		word = new Word(); 
-		Expect(6);
-		word.op(0b00011); 
-		ra = reg();
-		word.ra(ra); 
-		Expect(40);
-		Expect(1);
-		int imm = intValue(t.val); 
-		word.imm(imm); 
-		return word;
-	}
-
-	Word  strInstr() {
-		Word  word;
-		int ra, rb; 
-		word = new Word(); 
-		Expect(7);
-		word.op(0b00100); 
-		Expect(1);
-		int imm = intValue(t.val); 
-		word.imm(imm); 
-		Expect(40);
+		Expect(39);
 		ra = reg();
 		word.ra(ra); 
 		return word;
@@ -391,13 +356,33 @@ boolean debug = false;
 		Word  word;
 		int ra, rb; 
 		word = new Word(); 
+		Expect(6);
+		word.op(0b00011); 
+		word = rType(word);
+		return word;
+	}
+
+	Word  subInstr() {
+		Word  word;
+		int ra, rb; 
+		word = new Word(); 
+		Expect(7);
+		word.op(0b00100); 
+		word = rType(word);
+		return word;
+	}
+
+	Word  andInstr() {
+		Word  word;
+		int ra, rb; 
+		word = new Word(); 
 		Expect(8);
 		word.op(0b00101); 
 		word = rType(word);
 		return word;
 	}
 
-	Word  subInstr() {
+	Word  orInstr() {
 		Word  word;
 		int ra, rb; 
 		word = new Word(); 
@@ -407,7 +392,7 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  andInstr() {
+	Word  shrInstr() {
 		Word  word;
 		int ra, rb; 
 		word = new Word(); 
@@ -417,7 +402,7 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  orInstr() {
+	Word  shraInstr() {
 		Word  word;
 		int ra, rb; 
 		word = new Word(); 
@@ -427,7 +412,7 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  shrInstr() {
+	Word  shlInstr() {
 		Word  word;
 		int ra, rb; 
 		word = new Word(); 
@@ -437,7 +422,7 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  shlInstr() {
+	Word  rorInstr() {
 		Word  word;
 		int ra, rb; 
 		word = new Word(); 
@@ -447,7 +432,7 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  rorInstr() {
+	Word  rolInstr() {
 		Word  word;
 		int ra, rb; 
 		word = new Word(); 
@@ -457,17 +442,16 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  rolInstr() {
+	Word  addiInstr() {
 		Word  word;
-		int ra, rb; 
 		word = new Word(); 
 		Expect(15);
 		word.op(0b01100); 
-		word = rType(word);
+		word = iType(word);
 		return word;
 	}
 
-	Word  addiInstr() {
+	Word  andiInstr() {
 		Word  word;
 		word = new Word(); 
 		Expect(16);
@@ -476,7 +460,7 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  andiInstr() {
+	Word  oriInstr() {
 		Word  word;
 		word = new Word(); 
 		Expect(17);
@@ -485,16 +469,16 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  oriInstr() {
+	Word  mulInstr() {
 		Word  word;
 		word = new Word(); 
 		Expect(18);
 		word.op(0b01111); 
-		word = iType(word);
+		word = r2Type(word);
 		return word;
 	}
 
-	Word  mulInstr() {
+	Word  divInstr() {
 		Word  word;
 		word = new Word(); 
 		Expect(19);
@@ -503,7 +487,7 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  divInstr() {
+	Word  negInstr() {
 		Word  word;
 		word = new Word(); 
 		Expect(20);
@@ -512,7 +496,7 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  negInstr() {
+	Word  notInstr() {
 		Word  word;
 		word = new Word(); 
 		Expect(21);
@@ -521,56 +505,82 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  notInstr() {
+	Word  brzrInstr() {
 		Word  word;
+		int ra; 
 		word = new Word(); 
 		Expect(22);
 		word.op(0b10011); 
-		word = r2Type(word);
-		return word;
-	}
-
-	Word  brzrInstr() {
-		Word  word;
-		word = new Word(); 
-		Expect(23);
-		word.op(0b10100); 
-		word = r2Type(word);
-		word.imm(0b00); 
+		word.c2(0b0000); 
+		ra = reg();
+		word.ra(ra); 
+		Expect(39);
+		Expect(1);
+		int imm = intValue(t.val); 
+		word.imm(imm); 
 		return word;
 	}
 
 	Word  brnzInstr() {
 		Word  word;
+		int ra; 
 		word = new Word(); 
-		Expect(24);
-		word.op(0b10100); 
-		word = r2Type(word);
-		word.imm(0b01); 
+		Expect(23);
+		word.op(0b10011); 
+		word.c2(0b0001); 
+		ra = reg();
+		word.ra(ra); 
+		Expect(39);
+		Expect(1);
+		int imm = intValue(t.val); 
+		word.imm(imm); 
 		return word;
 	}
 
 	Word  brplInstr() {
 		Word  word;
+		int ra; 
 		word = new Word(); 
-		Expect(25);
-		word.op(0b10100); 
-		word = r2Type(word);
-		word.imm(0b10); 
+		Expect(24);
+		word.op(0b10011); 
+		word.c2(0b0010); 
+		ra = reg();
+		word.ra(ra); 
+		Expect(39);
+		Expect(1);
+		int imm = intValue(t.val); 
+		word.imm(imm); 
 		return word;
 	}
 
 	Word  brmiInstr() {
 		Word  word;
+		int ra; 
 		word = new Word(); 
-		Expect(26);
-		word.op(0b10100); 
-		word = r2Type(word);
-		word.imm(0b11); 
+		Expect(25);
+		word.op(0b10011); 
+		word.c2(0b0011); 
+		ra = reg();
+		word.ra(ra); 
+		Expect(39);
+		Expect(1);
+		int imm = intValue(t.val); 
+		word.imm(imm); 
 		return word;
 	}
 
 	Word  jrInstr() {
+		Word  word;
+		word = new Word(); 
+		int ra = 0; 
+		Expect(26);
+		word.op(0b10100); 
+		ra = reg();
+		word.ra(ra); 
+		return word;
+	}
+
+	Word  jalInstr() {
 		Word  word;
 		word = new Word(); 
 		int ra = 0; 
@@ -581,22 +591,11 @@ boolean debug = false;
 		return word;
 	}
 
-	Word  jalInstr() {
-		Word  word;
-		word = new Word(); 
-		int ra = 0; 
-		Expect(28);
-		word.op(0b10110); 
-		ra = reg();
-		word.ra(ra); 
-		return word;
-	}
-
 	Word  inInstr() {
 		Word  word;
 		word = new Word(); 
 		int ra = 0; 
-		Expect(29);
+		Expect(28);
 		word.op(0b10111); 
 		ra = reg();
 		word.ra(ra); 
@@ -607,7 +606,7 @@ boolean debug = false;
 		Word  word;
 		word = new Word(); 
 		int ra = 0; 
-		Expect(30);
+		Expect(29);
 		word.op(0b11000); 
 		ra = reg();
 		word.ra(ra); 
@@ -618,7 +617,7 @@ boolean debug = false;
 		Word  word;
 		word = new Word(); 
 		int ra = 0; 
-		Expect(31);
+		Expect(30);
 		word.op(0b11001); 
 		ra = reg();
 		word.ra(ra); 
@@ -629,7 +628,7 @@ boolean debug = false;
 		Word  word;
 		word = new Word(); 
 		int ra = 0; 
-		Expect(32);
+		Expect(31);
 		word.op(0b11010); 
 		ra = reg();
 		word.ra(ra); 
@@ -639,7 +638,7 @@ boolean debug = false;
 	Word  nopInstr() {
 		Word  word;
 		word = new Word(); 
-		Expect(33);
+		Expect(32);
 		word.op(0b11011); 
 		return word;
 	}
@@ -647,18 +646,18 @@ boolean debug = false;
 	Word  haltInstr() {
 		Word  word;
 		word = new Word(); 
-		Expect(34);
+		Expect(33);
 		word.op(0b11100); 
 		return word;
 	}
 
 	int  reg() {
 		int  regIdent;
-		if (la.kind == 43) {
+		if (la.kind == 42) {
 			Get();
-		} else if (la.kind == 43) {
+		} else if (la.kind == 42) {
 			Get();
-		} else SynErr(47);
+		} else SynErr(46);
 		Expect(1);
 		regIdent = intValue(t.val); 
 		return regIdent;
@@ -671,10 +670,10 @@ boolean debug = false;
 		int rc = 0; 
 		ra = reg();
 		wordIn.ra(ra); 
-		Expect(40);
+		Expect(39);
 		rb = reg();
 		wordIn.rb(rb); 
-		Expect(40);
+		Expect(39);
 		rc = reg();
 		wordIn.rc(rc); 
 		word = wordIn; 
@@ -687,10 +686,10 @@ boolean debug = false;
 		int rb = 0; 
 		ra = reg();
 		wordIn.ra(ra); 
-		Expect(40);
+		Expect(39);
 		rb = reg();
 		wordIn.rb(rb); 
-		Expect(40);
+		Expect(39);
 		Expect(1);
 		int imm = intValue(t.val); 
 		wordIn.imm(imm); 
@@ -704,7 +703,7 @@ boolean debug = false;
 		int rb = 0; 
 		ra = reg();
 		wordIn.ra(ra); 
-		Expect(40);
+		Expect(39);
 		rb = reg();
 		wordIn.rb(rb); 
 		word = wordIn; 
@@ -712,7 +711,7 @@ boolean debug = false;
 	}
 
 	void Word() {
-		Expect(36);
+		Expect(35);
 		Expect(1);
 		mem.addWord(intValue(t.val)); 
 		while (la.kind == 1) {
@@ -723,7 +722,7 @@ boolean debug = false;
 
 	void Byte() {
 		int word = 0; 
-		Expect(37);
+		Expect(36);
 		int cnt = 0; 
 		Expect(1);
 		word |= (intValue(t.val) & 0xff) << (cnt++ * 8); 
@@ -751,9 +750,9 @@ boolean debug = false;
 	}
 
 	private static final boolean[][] set = {
-		{_T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x},
-		{_x,_x,_x,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_x,_x, _x,_x,_x,_x, _x,_x},
-		{_x,_x,_x,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x}
+		{_T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x},
+		{_x,_x,_x,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_x,_x,_x, _x,_x,_x,_x, _x},
+		{_x,_x,_x,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x}
 
 	};
 } // end Parser
@@ -784,48 +783,47 @@ class Errors {
 			case 3: s = "pLd expected"; break;
 			case 4: s = "pLdi expected"; break;
 			case 5: s = "pSt expected"; break;
-			case 6: s = "pLdr expected"; break;
-			case 7: s = "pStr expected"; break;
-			case 8: s = "pAdd expected"; break;
-			case 9: s = "pSub expected"; break;
-			case 10: s = "pAnd expected"; break;
-			case 11: s = "pOr expected"; break;
-			case 12: s = "pShr expected"; break;
-			case 13: s = "pShl expected"; break;
-			case 14: s = "pRor expected"; break;
-			case 15: s = "pRol expected"; break;
-			case 16: s = "pAddi expected"; break;
-			case 17: s = "pAndi expected"; break;
-			case 18: s = "pOri expected"; break;
-			case 19: s = "pMul expected"; break;
-			case 20: s = "pDiv expected"; break;
-			case 21: s = "pNeg expected"; break;
-			case 22: s = "pNot expected"; break;
-			case 23: s = "pBrzr expected"; break;
-			case 24: s = "pBrnz expected"; break;
-			case 25: s = "pBrpl expected"; break;
-			case 26: s = "pBrmi expected"; break;
-			case 27: s = "pJr expected"; break;
-			case 28: s = "pJal expected"; break;
-			case 29: s = "pIn expected"; break;
-			case 30: s = "pOut expected"; break;
-			case 31: s = "pMfhi expected"; break;
-			case 32: s = "pMflo expected"; break;
-			case 33: s = "pNop expected"; break;
-			case 34: s = "pHalt expected"; break;
-			case 35: s = "pOrg expected"; break;
-			case 36: s = "pWord expected"; break;
-			case 37: s = "pByte expected"; break;
-			case 38: s = "pSkip expected"; break;
-			case 39: s = "\"\\n\" expected"; break;
-			case 40: s = "\",\" expected"; break;
-			case 41: s = "\"(\" expected"; break;
-			case 42: s = "\")\" expected"; break;
-			case 43: s = "\"r\" expected"; break;
-			case 44: s = "??? expected"; break;
-			case 45: s = "invalid Instr"; break;
-			case 46: s = "invalid data"; break;
-			case 47: s = "invalid reg"; break;
+			case 6: s = "pAdd expected"; break;
+			case 7: s = "pSub expected"; break;
+			case 8: s = "pAnd expected"; break;
+			case 9: s = "pOr expected"; break;
+			case 10: s = "pShr expected"; break;
+			case 11: s = "pShra expected"; break;
+			case 12: s = "pShl expected"; break;
+			case 13: s = "pRor expected"; break;
+			case 14: s = "pRol expected"; break;
+			case 15: s = "pAddi expected"; break;
+			case 16: s = "pAndi expected"; break;
+			case 17: s = "pOri expected"; break;
+			case 18: s = "pMul expected"; break;
+			case 19: s = "pDiv expected"; break;
+			case 20: s = "pNeg expected"; break;
+			case 21: s = "pNot expected"; break;
+			case 22: s = "pBrzr expected"; break;
+			case 23: s = "pBrnz expected"; break;
+			case 24: s = "pBrpl expected"; break;
+			case 25: s = "pBrmi expected"; break;
+			case 26: s = "pJr expected"; break;
+			case 27: s = "pJal expected"; break;
+			case 28: s = "pIn expected"; break;
+			case 29: s = "pOut expected"; break;
+			case 30: s = "pMfhi expected"; break;
+			case 31: s = "pMflo expected"; break;
+			case 32: s = "pNop expected"; break;
+			case 33: s = "pHalt expected"; break;
+			case 34: s = "pOrg expected"; break;
+			case 35: s = "pWord expected"; break;
+			case 36: s = "pByte expected"; break;
+			case 37: s = "pSkip expected"; break;
+			case 38: s = "\"\\n\" expected"; break;
+			case 39: s = "\",\" expected"; break;
+			case 40: s = "\"(\" expected"; break;
+			case 41: s = "\")\" expected"; break;
+			case 42: s = "\"r\" expected"; break;
+			case 43: s = "??? expected"; break;
+			case 44: s = "invalid Instr"; break;
+			case 45: s = "invalid data"; break;
+			case 46: s = "invalid reg"; break;
 			default: s = "error " + n; break;
 		}
 		printMsg(line, col, s);
