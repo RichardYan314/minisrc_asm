@@ -18,9 +18,9 @@ CHARACTERS
   lBinDigit = '0' + '1'.
   lHexDigit = lDigit + "ABCDEF".
   lNonDIgit = ANY - lDigit.
-  
+
 TOKENS
-  pNumber = ['-'] 
+  pNumber = ['-']
   		(lNonZero {lDigit}
          | "0"
          | "0x" lHexDigit {lHexDigit}
@@ -29,13 +29,12 @@ TOKENS
   pLd = "ld".
   pLdi = "ldi".
   pSt = "st".
-  pLdr = "ldr".
-  pStr = "str".
   pAdd = "add".
   pSub = "sub".
   pAnd = "and".
   pOr = "or".
   pShr = "shr".
+  pShra = "shra".
   pShl = "shl".
   pRor = "ror".
   pRol = "rol".
@@ -62,7 +61,7 @@ TOKENS
   pWord = ".word".
   pByte = ".byte".
   pSkip = ".skip".
-  
+
 COMMENTS FROM "//" TO '\n'
 COMMENTS FROM "/*" TO "*/" NESTED
 
@@ -71,19 +70,18 @@ IGNORE '\r' + '\n' + '\t' + '\f'
 PRODUCTIONS
 
   Minisrc = {(orgDirect | Instr | data) ['\n']}.
-  
+
   Instr =             (. Word word = new Word(); .)
   (
     ldInstr<out word>
   | ldiInstr<out word>
   | stInstr<out word>
-  | ldrInstr<out word>
-  | strInstr<out word>
   | addInstr<out word>
   | subInstr<out word>
   | andInstr<out word>
   | orInstr<out word>
   | shrInstr<out word>
+  | shraInstr<out word>
   | shlInstr<out word>
   | rorInstr<out word>
   | rolInstr<out word>
@@ -106,7 +104,7 @@ PRODUCTIONS
   | mfloInstr<out word>
   | nopInstr <out word>
   | haltInstr <out word>
-  )        
+  )
 
   (. mem.addWord(word.get()); .)
   (. if(debug) {.)
@@ -114,114 +112,100 @@ PRODUCTIONS
   (. 	System.out.println("|   ||  ||  ||                 |"); .)
   (. } .)
   .
-           
-  ldInstr<out Word word> = 
+
+  ldInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
     pLd         (. word.op(0b00000); .)
     reg<out ra> (. word.ra(ra); .)
-    "," 
+    ","
     pNumber     (. int imm = intValue(t.val); .)
                 (. word.imm(imm); .)
     ["("
     reg<out rb> (. word.rb(rb); .)
     ")"]
     .
-  
+
   ldiInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
     pLdi        (. word.op(0b00001); .)
     reg<out ra> (. word.ra(ra); .)
-    "," 
+    ","
     pNumber     (. int imm = intValue(t.val); .)
                 (. word.imm(imm); .)
     ["("
     reg<out rb> (. word.rb(rb); .)
     ")"]
     .
-  
-  stInstr<out Word word> = 
+
+  stInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
     pSt         (. word.op(0b00010); .)
     pNumber     (. int imm = intValue(t.val); .)
                 (. word.imm(imm); .)
-    ["(" 
+    ["("
     reg<out rb> (. word.rb(rb); .)
-    ")"] 
-    "," 
+    ")"]
+    ","
     reg<out ra> (. word.ra(ra); .)
     .
 
-  ldrInstr<out Word word> = 
-                (. int ra, rb; .)
-                (. word = new Word(); .)
-    pLdr        (. word.op(0b00011); .)
-    reg<out ra> (. word.ra(ra); .)
-    ","
-    pNumber     (. int imm = intValue(t.val); .)
-                (. word.imm(imm); .)
-    .
-  
-  strInstr<out Word word> = 
-                (. int ra, rb; .)
-                (. word = new Word(); .)
-    pStr        (. word.op(0b00100); .)
-    pNumber     (. int imm = intValue(t.val); .)
-                (. word.imm(imm); .)
-    ","
-    reg<out ra> (. word.ra(ra); .)
-    .
-  
   addInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
-    pAdd        (. word.op(0b00101); .)
+    pAdd        (. word.op(0b00011); .)
     rType<out word, word>.
-  
+
   subInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
-    pSub        (. word.op(0b00110); .)
+    pSub        (. word.op(0b00100); .)
     rType<out word, word>.
-  
+
   andInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
-    pAnd        (. word.op(0b00111); .)
+    pAnd        (. word.op(0b00101); .)
     rType<out word, word>.
-  
+
   orInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
-    pOr         (. word.op(0b01000); .)
+    pOr         (. word.op(0b00110); .)
     rType<out word, word>.
-  
+
   shrInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
-    pShr        (. word.op(0b01001); .)
+    pShr        (. word.op(0b00111); .)
     rType<out word, word>.
-  
+
+  shraInstr<out Word word> =
+                (. int ra, rb; .)
+                (. word = new Word(); .)
+    pShra       (. word.op(0b01000); .)
+    rType<out word, word>.
+
   shlInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
-    pShl        (. word.op(0b01010); .)
+    pShl        (. word.op(0b01001); .)
     rType<out word, word>.
-  
+
   rorInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
-    pRor        (. word.op(0b01011); .)
+    pRor        (. word.op(0b01010); .)
     rType<out word, word>.
-  
+
   rolInstr<out Word word> =
                 (. int ra, rb; .)
                 (. word = new Word(); .)
-    pRol        (. word.op(0b01100); .)
+    pRol        (. word.op(0b01011); .)
     rType<out word, word>.
-  
+
   rType <out Word word, Word wordIn>=
                       (. int ra = 0; .)
                       (. int rb = 0; .)
@@ -231,22 +215,22 @@ PRODUCTIONS
     "," reg<out rc>   (. wordIn.rc(rc); .)
                       (. word = wordIn; .)
     .
-  
-  addiInstr<out Word word> = 
+
+  addiInstr<out Word word> =
                 (. word = new Word(); .)
-    pAddi       (. word.op(0b01101); .)
+    pAddi       (. word.op(0b01100); .)
     iType<out word, word>
     .
-  
+
   andiInstr<out Word word> =
                 (. word = new Word(); .)
-    pAndi       (. word.op(0b01110); .)
+    pAndi       (. word.op(0b01101); .)
     iType<out word, word>
     .
-  
-  oriInstr<out Word word> = 
+
+  oriInstr<out Word word> =
                 (. word = new Word(); .)
-    pOri        (. word.op(0b01111); .)
+    pOri        (. word.op(0b01110); .)
     iType<out word, word>
     .
 
@@ -260,107 +244,123 @@ PRODUCTIONS
                       (. word = wordIn; .)
     .
 
-  mulInstr<out Word word> = 
+  mulInstr<out Word word> =
             (. word = new Word(); .)
-    pMul    (. word.op(0b10000); .)
+    pMul    (. word.op(0b01111); .)
     r2Type<out word, word>
     .
-  
-  divInstr<out Word word> = 
+
+  divInstr<out Word word> =
             (. word = new Word(); .)
-    pDiv    (. word.op(0b10001); .)
+    pDiv    (. word.op(0b10000); .)
     r2Type<out word, word>
     .
-  
-  negInstr<out Word word> = 
+
+  negInstr<out Word word> =
             (. word = new Word(); .)
-    pNeg    (. word.op(0b10010); .)
+    pNeg    (. word.op(0b10001); .)
     r2Type<out word, word>
     .
-  
-  notInstr<out Word word> = 
+
+  notInstr<out Word word> =
             (. word = new Word(); .)
-    pNot    (. word.op(0b10011); .)
+    pNot    (. word.op(0b10010); .)
     r2Type<out word, word>
     .
-  
-  brzrInstr<out Word word> = 
-            (. word = new Word(); .)
-    pBrzr    (. word.op(0b10100); .)
-    r2Type<out word, word>
-             (. word.imm(0b00); .)
+
+  brzrInstr<out Word word> =
+                (. int ra; .)
+                (. word = new Word(); .)
+    pBrzr       (. word.op(0b10011); .)
+                (. word.c2(0b0000); .)
+    reg<out ra> (. word.ra(ra); .)
+    ","
+    pNumber     (. int imm = intValue(t.val); .)
+                (. word.imm(imm); .)
     .
-  
-  brnzInstr<out Word word> = 
-             (. word = new Word(); .)
-    pBrnz    (. word.op(0b10100); .)
-    r2Type<out word, word>
-             (. word.imm(0b01); .)
+
+  brnzInstr<out Word word> =
+                (. int ra; .)
+                (. word = new Word(); .)
+    pBrnz       (. word.op(0b10011); .)
+                (. word.c2(0b0001); .)
+    reg<out ra> (. word.ra(ra); .)
+    ","
+    pNumber     (. int imm = intValue(t.val); .)
+                (. word.imm(imm); .)
     .
-  
-  brplInstr<out Word word> = 
-             (. word = new Word(); .)
-    pBrpl    (. word.op(0b10100); .)
-    r2Type<out word, word>
-             (. word.imm(0b10); .)
+
+  brplInstr<out Word word> =
+                (. int ra; .)
+                (. word = new Word(); .)
+    pBrpl       (. word.op(0b10011); .)
+                (. word.c2(0b0010); .)
+    reg<out ra> (. word.ra(ra); .)
+    ","
+    pNumber     (. int imm = intValue(t.val); .)
+                (. word.imm(imm); .)
     .
-  
-  brmiInstr<out Word word> = 
-             (. word = new Word(); .)
-    pBrmi    (. word.op(0b10100); .)
-    r2Type<out word, word>
-             (. word.imm(0b11); .)
+
+  brmiInstr<out Word word> =
+                (. int ra; .)
+                (. word = new Word(); .)
+    pBrmi       (. word.op(0b10011); .)
+                (. word.c2(0b0011); .)
+    reg<out ra> (. word.ra(ra); .)
+    ","
+    pNumber     (. int imm = intValue(t.val); .)
+                (. word.imm(imm); .)
     .
 
   r2Type <out Word word, Word wordIn> =
                       (. int ra = 0; .)
                       (. int rb = 0; .)
-    reg<out ra>       (. wordIn.ra(ra); .) 
+    reg<out ra>       (. wordIn.ra(ra); .)
     "," reg<out rb>   (. wordIn.rb(rb); .)
                       (. word = wordIn; .)
     .
 
-  jrInstr <out Word word> = 
+  jrInstr <out Word word> =
              (. word = new Word(); .)
              (. int ra = 0; .)
-    pJr      (. word.op(0b10101); .)
-    reg<out ra> (. word.ra(ra); .) 
+    pJr      (. word.op(0b10100); .)
+    reg<out ra> (. word.ra(ra); .)
     .
-  
-  jalInstr <out Word word> = 
+
+  jalInstr <out Word word> =
              (. word = new Word(); .)
              (. int ra = 0; .)
-    pJal     (. word.op(0b10110); .)
-    reg<out ra> (. word.ra(ra); .) 
-    . 
-  
-  inInstr <out Word word> = 
+    pJal     (. word.op(0b10101); .)
+    reg<out ra> (. word.ra(ra); .)
+    .
+
+  inInstr <out Word word> =
              (. word = new Word(); .)
              (. int ra = 0; .)
-    pIn      (. word.op(0b10111); .)
-    reg<out ra> (. word.ra(ra); .) 
-    . 
-  
-  outInstr <out Word word> = 
+    pIn      (. word.op(0b10110); .)
+    reg<out ra> (. word.ra(ra); .)
+    .
+
+  outInstr <out Word word> =
              (. word = new Word(); .)
              (. int ra = 0; .)
-    pOut     (. word.op(0b11000); .)
-    reg<out ra> (. word.ra(ra); .) 
-    . 
-  
-  mfhiInstr <out Word word> = 
+    pOut     (. word.op(0b10111); .)
+    reg<out ra> (. word.ra(ra); .)
+    .
+
+  mfhiInstr <out Word word> =
              (. word = new Word(); .)
              (. int ra = 0; .)
-    pMfhi    (. word.op(0b11001); .)
-    reg<out ra> (. word.ra(ra); .) 
-    . 
-  
-  mfloInstr <out Word word> = 
+    pMfhi    (. word.op(0b11000); .)
+    reg<out ra> (. word.ra(ra); .)
+    .
+
+  mfloInstr <out Word word> =
              (. word = new Word(); .)
              (. int ra = 0; .)
-    pMflo    (. word.op(0b11010); .)
-    reg<out ra> (. word.ra(ra); .) 
-    . 
+    pMflo    (. word.op(0b11001); .)
+    reg<out ra> (. word.ra(ra); .)
+    .
 
   reg <out int regIdent> =
     ("r" | "R") pNumber (. regIdent = intValue(t.val); .)
@@ -368,26 +368,26 @@ PRODUCTIONS
 
   nopInstr <out Word word> =
             (. word = new Word(); .)
-    pNop    (. word.op(0b11011); .)
+    pNop    (. word.op(0b11010); .)
     .
 
   haltInstr <out Word word> =
             (. word = new Word(); .)
-    pHalt    (. word.op(0b11100); .)
-    . 
+    pHalt    (. word.op(0b11011); .)
+    .
 
-  orgDirect = 
+  orgDirect =
     pOrg
     pNumber   (. int addr = intValue(t.val); .)
               (. mem.advPtr(addr); .)
     .
 
-  data = 
+  data =
       Word
     | Byte.
 
-  Word = 
-    pWord 
+  Word =
+    pWord
     pNumber (. mem.addWord(intValue(t.val)); .)
     {
       pNumber (. mem.addWord(intValue(t.val)); .)
@@ -406,5 +406,5 @@ PRODUCTIONS
               (. } .)
     }         (. mem.addWord(word); .)
     .
-    
+
 END Minisrc.
